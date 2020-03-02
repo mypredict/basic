@@ -1,16 +1,16 @@
-import { useRef, useCallback } from 'react';
+import { useRef, useCallback, useEffect } from 'react';
 
-export type DebounceFn<T extends any[]> = (...args: T) => any;
+export type Fn<T extends any[]> = (...args: T) => any;
 
 export interface RV<T extends any[]> {
   run: (...args: T) => void;
   clear: () => void;
 }
 
-function useDebounce<T extends any[]>(fn: DebounceFn<T>, delay: number = 300): RV<T> {
+function useTimeout<T extends any[]>(fn: Fn<T>, delay: number = 0): RV<T> {
   const timer = useRef<ReturnType<typeof setTimeout>>();
 
-  const fnRef = useRef<DebounceFn<T>>(fn);
+  const fnRef = useRef<Fn<T>>(fn);
   fnRef.current = fn;
 
   const clear = useCallback(() => {
@@ -25,10 +25,17 @@ function useDebounce<T extends any[]>(fn: DebounceFn<T>, delay: number = 300): R
         clear();
       }, delay);
     },
-    [delay, clear]
+    [clear]
   );
+
+  useEffect(() => {
+    console.log(1111);
+    return () => {
+      console.log('end');
+    };
+  }, []);
 
   return { run, clear };
 }
 
-export default useDebounce;
+export default useTimeout;
