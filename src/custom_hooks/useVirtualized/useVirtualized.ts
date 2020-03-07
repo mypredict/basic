@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import useDebounce from '../useDebounce/useDebounce';
 import binarySearch from '../utils/binarySearch';
 
@@ -7,6 +7,7 @@ export type ItemHeight = number | ((index: number) => number);
 export interface Options {
   itemHeight: ItemHeight;
   renderCount?: number;
+  delay?: number;
 }
 
 export interface RV<T> {
@@ -29,7 +30,7 @@ export interface RV<T> {
 }
 
 function useVirtualized<T = any>(items: Array<T>, options: Options): RV<T> {
-  const { itemHeight, renderCount = 20 } = options;
+  const { itemHeight, renderCount = 10, delay = 100 } = options;
 
   // 缓存每个项目对应的 paddingTop 值, 多出最后一个值即为总高度
   const [paddingTopCache, setPaddingTopCache] = useState<Array<number>>([]);
@@ -57,11 +58,11 @@ function useVirtualized<T = any>(items: Array<T>, options: Options): RV<T> {
 
   // 检测是否处于滚动状态
   const [isScrolling, setIsScrolling] = useState(false);
-  const { run } = useDebounce(() => setIsScrolling(false), 100);
+  const { run } = useDebounce(() => setIsScrolling(false), delay);
 
   // 滚动时更新 startIndex
   const [startIndex, setStartIndex] = useState(0);
-  function handleScroll(e: any) {
+  const handleScroll = useCallback((e: any) => {
     e.preventDefault();
     run();
     if (Math.abs(e.target.scrollTop - paddingTopCache[startIndex]) > 0) {
@@ -80,7 +81,7 @@ function useVirtualized<T = any>(items: Array<T>, options: Options): RV<T> {
       setStartIndex(newStartIndex);
       setIsScrolling(true);
     }
-  }
+  }, [itemHeight, paddingTopCache, run, startIndex]);
 
   return {
     isScrolling,
