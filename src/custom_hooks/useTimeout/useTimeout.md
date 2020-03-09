@@ -1,5 +1,7 @@
 # 自动清除的 setTimeout 定时器
 
+只有执行完了或者手动 clear 才会取消当前定时器, 如果要每次更改都进行取消, 可使用 useDebounce.
+
 ## demo
 
 ```js

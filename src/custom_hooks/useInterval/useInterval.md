@@ -7,7 +7,7 @@ import React from 'react';
 import { useInterval } from './custom_hooks/index';
 
 function Demo() {
-  const { run } = useInterval((...args) => console.log(args), 1000);
+  const { run } = useInterval((...args) => console.log(args[0]), 1000);
 
   return <button onClick={() => run('触发')}>触发</button>;
 }
