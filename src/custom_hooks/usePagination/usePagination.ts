@@ -1,31 +1,37 @@
-import { useState, useEffect } from 'react';
+import { useMemo } from 'react';
 
-interface Parameter {
+export interface Parameter {
   total: number;
   rowsPerPage: number;
   currentPage?: number;
 }
 
-function usePagination(parameter: Parameter) {
-  const { total, rowsPerPage, currentPage = 1 } = parameter;
-  const [startIndex, setStartIndex] = useState(0);
-  const [endIndex, setEndIndex] = useState(0);
-  const [countPage, setCountPage] = useState(1);
+export interface RV {
+  startIndex: number;
+  endIndex: number;
+  countPage: number;
+}
 
-  useEffect(() => {
+function usePagination(parameter: Parameter): RV {
+  const { total, rowsPerPage, currentPage = 1 } = parameter;
+
+  const result = useMemo(() => {
+    let startIndex = 0;
+    let endIndex = 0;
     const countPage = Math.ceil(total / rowsPerPage);
-    setCountPage(countPage);
 
     if (currentPage * rowsPerPage > total) {
-      setStartIndex((countPage - 1) * rowsPerPage + 1);
-      setEndIndex(total);
+      startIndex = (countPage - 1) * rowsPerPage + 1;
+      endIndex = total;
     } else {
-      setStartIndex((currentPage - 1) * rowsPerPage + 1);
-      setEndIndex(currentPage * rowsPerPage);
+      startIndex = (currentPage - 1) * rowsPerPage + 1;
+      endIndex = currentPage * rowsPerPage;
     }
+
+    return { startIndex, endIndex, countPage };
   }, [total, currentPage, rowsPerPage]);
 
-  return { startIndex, endIndex, countPage };
+  return result;
 }
 
 export default usePagination;
