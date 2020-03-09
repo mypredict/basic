@@ -27,13 +27,6 @@ function useTimeout<T extends any[]>(fn: Fn<T>, delay: number = 0): RV<T> {
     [clear, delay]
   );
 
-  useEffect(() => {
-    console.log(1111);
-    return () => {
-      console.log('end');
-    };
-  }, []);
-
   return { run, clear };
 }
 

@@ -1,4 +1,4 @@
-import { useRef, useCallback, useEffect } from 'react';
+import { useRef, useCallback } from 'react';
 
 export type Fn<T extends any[]> = (...args: T) => any;
 
@@ -26,13 +26,6 @@ function useInterval<T extends any[]>(fn: Fn<T>, delay: number = 0): RV<T> {
     },
     [clear, delay]
   );
-
-  useEffect(() => {
-    console.log(1111);
-    return () => {
-      console.log('end');
-    };
-  }, []);
 
   return { run, clear };
 }

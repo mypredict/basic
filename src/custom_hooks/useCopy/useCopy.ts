@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 
-type ParamsTuple = Array<[string | number | RegExp, string | number]>;
+export type ParamsTuple = Array<[string | number | RegExp, string | number]>;
 
 function copying(data: string): string {
   const ele = document.createElement('textarea');
