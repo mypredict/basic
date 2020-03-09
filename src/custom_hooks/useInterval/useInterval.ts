@@ -24,7 +24,7 @@ function useInterval<T extends any[]>(fn: Fn<T>, delay: number = 0): RV<T> {
         fnRef.current(...args);
       }, delay);
     },
-    [clear]
+    [clear, delay]
   );
 
   useEffect(() => {

@@ -19,13 +19,12 @@ function useTimeout<T extends any[]>(fn: Fn<T>, delay: number = 0): RV<T> {
 
   const run = useCallback(
     (...args: T) => {
-      clear();
       timer.current = setTimeout(() => {
         fnRef.current(...args);
         clear();
       }, delay);
     },
-    [clear]
+    [clear, delay]
   );
 
   useEffect(() => {
