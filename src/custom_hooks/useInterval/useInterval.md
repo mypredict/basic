@@ -24,5 +24,6 @@ delay?: number; // 时间间隔
 
 ```ts
 run: Function; // 调用的方法
+runNow: Function; // 立即调用的方法
 clear: Function; // 立即取消触发函数
 ```

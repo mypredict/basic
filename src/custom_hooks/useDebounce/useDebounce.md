@@ -24,5 +24,6 @@ delay?: number; // 防抖的时间间隔
 
 ```ts
 run: Function; // 持续调用的方法, 其会节流触发目标函数
+runNow: Function; // 立即调用的方法
 clear: Function; // 立即取消触发函数
 ```

@@ -1,20 +1,28 @@
 import { useRef, useCallback, useEffect } from 'react';
 
-export type Fn<T extends any[]> = (...args: T) => any;
+export type TimeoutFn<T extends any[]> = (...args: T) => any;
 
 export interface RV<T extends any[]> {
   run: (...args: T) => void;
+  runNow: (...args: T) => void;
   clear: () => void;
 }
 
-function useTimeout<T extends any[]>(fn: Fn<T>, delay: number = 0): RV<T> {
-  const timer = useRef<ReturnType<typeof setTimeout>>();
-
-  const fnRef = useRef<Fn<T>>(fn);
-  fnRef.current = fn;
+function useTimeout<T extends any[]>(fn: TimeoutFn<T>, delay: number = 0): RV<T> {
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const clear = useCallback(() => {
-    timer.current && clearTimeout(timer.current);
+    if (timer.current) {
+      clearTimeout(timer.current);
+      timer.current = null;
+    }
+  }, []);
+
+  const fnRef = useRef<TimeoutFn<T>>(fn);
+  fnRef.current = fn;
+
+  const runNow = useCallback((...args: T) => {
+    fnRef.current(...args);
   }, []);
 
   const run = useCallback(
@@ -27,7 +35,9 @@ function useTimeout<T extends any[]>(fn: Fn<T>, delay: number = 0): RV<T> {
     [clear, delay]
   );
 
-  return { run, clear };
+  useEffect(() => clear, [clear]);
+
+  return { run, runNow, clear };
 }
 
 export default useTimeout;
