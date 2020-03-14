@@ -1,0 +1,68 @@
+.bs-animation {
+  animation-duration: 0.3s;
+  animation-timing-function: linear;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+.bs-animation-fade {
+  animation-name: fadeIn;
+}
+
+.bs-animation-fade-show {
+  animation-direction: normal;
+}
+
+.bs-animation-fade-hide {
+  animation-name: fadeOut;
+}
+
+@keyframes scaleIn {
+  0% {
+    transform: scale(0, 0);
+  }
+
+  100% {
+    transform: scale(1, 1);
+  }
+}
+
+@keyframes scaleOut {
+  0% {
+    transform: scale(1, 1);
+  }
+
+  100% {
+    transform: scale(0, 0);
+  }
+}
+
+.bs-animation-scale {
+  animation-name: scaleIn;
+}
+
+.bs-animation-scale-show {
+  animation-direction: normal;
+}
+
+.bs-animation-scale-hide {
+  animation-name: scaleOut;
+}

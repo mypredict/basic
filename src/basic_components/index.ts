@@ -1,7 +1,9 @@
-import Switch from './Button/Switch';
-import RadioGroup from './Input/RadioGroup';
-import Radio from './Input/Radio';
-import FitImage from './FitImage/FitImage';
+import Animation from './Animation/Animation';
+import PopUpLayer from './PopUpLayer/PopUpLayer';
 import Dialog from './Dialog/Dialog';
+import Switch from './Switch/Switch';
+import RadioGroup from './Radio/RadioGroup';
+import Radio from './Radio/Radio';
+import FitImage from './FitImage/FitImage';
 
-export { Switch, RadioGroup, Radio, FitImage, Dialog };
+export { Animation, PopUpLayer, Dialog, Switch, RadioGroup, Radio, FitImage };

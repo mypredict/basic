@@ -9,6 +9,8 @@ const popUpLayerRoot = (() => {
 
   popUpLayerRoot = document.createElement('div');
   popUpLayerRoot.setAttribute('id', 'bs-pop-up-layer-root');
+  popUpLayerRoot.style.position = 'fixed';
+  popUpLayerRoot.style.top = '0';
   popUpLayerRoot.style.height = '0';
   document.body.appendChild(popUpLayerRoot);
   return popUpLayerRoot;
