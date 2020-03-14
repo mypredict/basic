@@ -1,11 +1,14 @@
-import React, { useState, useRef, useCallback } from 'react';
-import PopUpLayer from '../PopUpLayer/PopUpLayer';
+import React, { ReactElement, CSSProperties, useState, useRef, useCallback } from 'react';
+import { Animation, PopUpLayer } from '../index';
 import './Dialog.css';
+
+import { AnimationType } from '../Animation/Animation';
 
 export type CancelFn = () => void;
 export type ConfirmPromiseFn = () => Promise<any> | void;
 
 interface Props {
+  rootStyle?: CSSProperties;
   visible: boolean;
   title?: string;
   cancelIcon?: boolean;
@@ -13,17 +16,18 @@ interface Props {
   confirmBtn?: boolean;
   cancelBtnText?: string;
   confirmBtnText?: string;
-  confirmBtnLoading?: boolean;
+  confirmBtnAsync?: boolean;
   outsideClickCancel?: boolean;
   disabledConfirmBtn?: boolean;
   onCancel?: CancelFn;
   onConfirm?: ConfirmPromiseFn;
-  children?: Object;
+  animationType?: AnimationType;
+  children?: ReactElement;
 }
 
 function Dialog(props: Props) {
   const {
-    confirmBtnLoading,
+    confirmBtnAsync,
     outsideClickCancel,
     onConfirm = () => {},
     onCancel = () => {}
@@ -34,14 +38,14 @@ function Dialog(props: Props) {
 
   const [isLoading, setIsLoading] = useState(false);
   const handleConfirm = useCallback(async () => {
-    if (confirmBtnLoading) {
+    if (confirmBtnAsync) {
       setIsLoading(true);
       await confirmFnRef.current();
       setIsLoading(false);
     } else {
       confirmFnRef.current();
     }
-  }, [confirmBtnLoading]);
+  }, [confirmBtnAsync]);
 
   const cancelFnRef = useRef<CancelFn>(onCancel);
   cancelFnRef.current = onCancel;
@@ -54,12 +58,19 @@ function Dialog(props: Props) {
 
   return (
     <PopUpLayer>
-      {props.visible ? (
-        <div className="bs-dialog-wrap" onClick={handleOutsideClick}>
-          <div className="bs-dialog" onClick={e => e.stopPropagation()}>
+      <Animation display={props.visible} type={props.animationType}>
+        <div
+          className={`bs-dialog-wrap bs-dialog-wrap-${props.visible ? 'show' : 'hide'}`}
+          onClick={handleOutsideClick}
+        >
+          <div
+            className="bs-dialog"
+            onClick={e => e.stopPropagation()}
+            style={props.rootStyle}
+          >
             {(props.title || props.cancelIcon) && (
               <header className="bs-dialog-header">
-                <h2>{props.title}</h2>
+                <h2 className="bs-dialog-title">{props.title}</h2>
                 <button onClick={props.onCancel}>x</button>
               </header>
             )}
@@ -81,14 +92,13 @@ function Dialog(props: Props) {
             )}
           </div>
         </div>
-      ) : (
-        <></>
-      )}
+      </Animation>
     </PopUpLayer>
   );
 }
 
 Dialog.defaultProps = {
+  rootStyle: {},
   visible: false,
   title: '',
   cancelIcon: true,

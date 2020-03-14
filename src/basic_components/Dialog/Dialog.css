@@ -5,34 +5,49 @@
   top: 0;
   left: 0;
   background-color: rgba(0, 0, 0, 0.4);
+  opacity: 0;
+}
+
+.bs-dialog-wrap-show {
+  opacity: 1;
+  transition: opacity 0.5s;
+}
+
+.bs-dialog-wrap-hide {
+  opacity: 0;
+  transition: opacity 0.5s;
 }
 
 .bs-dialog {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  position: fixed;
-  min-width: 30vw;
-  min-height: 30vh;
+  position: absolute;
+  min-width: 30rem;
+  min-height: 15rem;
   top: 40%;
   left: 50%;
+  border-radius: 5px;
   transform: translate(-50%, -50%);
-  background: #eee;
+  background: #FFF;
 }
 
 .bs-dialog-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 3rem;
+  height: 4rem;
   padding-left: 1rem;
-  background-color: red;
+}
+
+h2.bs-dialog-title {
+  font-size: 1.1rem;
+  font-weight: 400;
 }
 
 .bs-dialog-footer {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  height: 3rem;
-  background-color: blue;
+  height: 4rem;
 }

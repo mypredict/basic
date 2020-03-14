@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useRequest, useCopy, usePagination, useVirtualized } from './custom_hooks/index';
-import { Switch, Radio } from './basic_components/index';
+import { Switch, Radio, Dialog } from './basic_components/index';
 import './App.css';
 
-const items = Array.from(Array(200)).map((_, index) => {
+const items = Array.from(Array(20000)).map((_, index) => {
   return {
     id: index,
     name: 'fhjd',
@@ -32,8 +32,20 @@ const App: React.FC = () => {
 
   const copy = useCopy();
   function handleChangeRadio(e: any) {
+    setVisible(true);
     copy(123);
     setValue(e.target.value);
+  }
+
+  const [visible, setVisible] = useState(false);
+
+  function handleConfirm() {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve();
+        setVisible(false);
+      }, 2000);
+    });
   }
 
   // console.log({ data, startIndex, endIndex, countPage });
@@ -46,6 +58,21 @@ const App: React.FC = () => {
         <Radio value={2} />
         <Radio value={3} />
       </Radio.Group>
+
+      <Dialog
+        title="发动机山卡拉富家大室发动机是离开"
+        animationType="scale"
+        outsideClickCancel={true}
+        visible={visible}
+        confirmBtnAsync={true}
+        onCancel={() => setVisible(false)}
+        onConfirm={handleConfirm}
+      >
+        <p style={{ width: '30rem', height: '10rem', margin: 0, background: '#eee' }}>
+          123
+        </p>
+      </Dialog>
+
       <div
         {...containerProps}
         style={{
