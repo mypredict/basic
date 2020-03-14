@@ -2,6 +2,8 @@ import { useCallback } from 'react';
 
 export type ParamsTuple = Array<[string | number | RegExp, string | number]>;
 
+export type RV = (data: string | number) => string;
+
 function copying(data: string): string {
   const ele = document.createElement('textarea');
   ele.value = data;
@@ -12,7 +14,7 @@ function copying(data: string): string {
   return data;
 }
 
-function useCopy(params?: ParamsTuple): Function {
+function useCopy(params?: ParamsTuple): RV {
   const handleReplace = useCallback(
     content => {
       if (!params) {
