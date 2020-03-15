@@ -1,24 +1,42 @@
-import { useEffect, useCallback } from 'react';
-import { Options, Result, PromiseFun } from './types';
+import { useReducer, useEffect, useCallback } from 'react';
+import {
+  PromiseFun,
+  BaseOptions,
+  AsyncOptions,
+  NewRequestOptions,
+  Result,
+  RunRequest
+} from './types';
 
-const defaultOptions: Options = {
+const defaultOptions: BaseOptions = {
   manual: true
 };
 
-function useAsync(promiseRequest: PromiseFun, options = defaultOptions): Result {
-  const request = useCallback(() => {
-    const a = promiseRequest();
-    a.then(data => console.log(data));
-  }, []);
+function useAsync(promiseRequest: PromiseFun, asyncOptions: AsyncOptions): Result {
+  // const [] = useReducer();
 
-  useEffect(() => {
-    request();
-  }, [request]);
+  const runRequest: RunRequest = useCallback(
+    (...args: any[] | [NewRequestOptions]) => {
+      const { customRequest, url, requestConfig } = {
+        ...defaultOptions,
+        ...asyncOptions
+      };
+
+      if (customRequest) {
+        promiseRequest(...args);
+      } else {
+        promiseRequest(args[0]?.url || url, args[0]?.requestConfig || requestConfig);
+      }
+    },
+    [asyncOptions]
+  );
 
   return {
     data: 123,
     loading: true,
-    error: undefined
+    error: undefined,
+    runRequest
+    // cancelRequest: () => {}
   };
 }
 
