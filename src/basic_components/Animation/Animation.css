@@ -3,6 +3,10 @@
   animation-timing-function: linear;
 }
 
+.bs-animation:empty {
+  display: none;
+}
+
 @keyframes fadeIn {
   0% {
     opacity: 0;
@@ -23,12 +27,8 @@
   }
 }
 
-.bs-animation-fade {
-  animation-name: fadeIn;
-}
-
 .bs-animation-fade-show {
-  animation-direction: normal;
+  animation-name: fadeIn;
 }
 
 .bs-animation-fade-hide {
@@ -55,12 +55,8 @@
   }
 }
 
-.bs-animation-scale {
-  animation-name: scaleIn;
-}
-
 .bs-animation-scale-show {
-  animation-direction: normal;
+  animation-name: scaleIn;
 }
 
 .bs-animation-scale-hide {

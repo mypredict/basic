@@ -20,7 +20,10 @@ import React from 'react';
 import { useCopy } from './custom_hooks/index';
 
 function Demo() {
-  const copy = useCopy(['/^d$/', '']);
+  const copy = useCopy([
+    [/^d$/, ''],
+    ['a', 'b']
+  ]);
 
   return <button onClick={() => copy('被复制内容12, 数字会被替换空')}>复制</button>;
 }

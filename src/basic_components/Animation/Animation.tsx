@@ -81,7 +81,6 @@ function Animation(props: Props) {
     <div
       className={`
         bs-animation
-        ${props.display ? 'bs-animation-' + props.type : ''}
         bs-animation-${props.type}-${props.display ? 'show' : 'hide'}
         ${props.className}
       `}
