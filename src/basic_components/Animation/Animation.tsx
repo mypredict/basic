@@ -9,7 +9,7 @@ import React, {
 } from 'react';
 import './Animation.css';
 
-export type AnimationType = 'fade' | 'scale';
+export type AnimationType = 'fade' | 'scale' | 'scale_fade';
 
 export type AnimationTimingFunction =
   | 'linear'

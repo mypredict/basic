@@ -59,10 +59,7 @@ function Dialog(props: Props) {
   return (
     <PopUpLayer>
       <Animation display={props.visible} type={props.animationType}>
-        <div
-          className={`bs-dialog-wrap bs-dialog-wrap-${props.visible ? 'show' : 'hide'}`}
-          onClick={handleOutsideClick}
-        >
+        <div className="bs-dialog-wrap" onClick={handleOutsideClick}>
           <div
             className="bs-dialog"
             onClick={e => e.stopPropagation()}
