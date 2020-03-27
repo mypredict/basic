@@ -1,0 +1,17 @@
+:root {
+  --bs-theme1-bg: #FFF;
+  --bs-button-on-bg: #6cc4ca;
+  --bs-button-off-bg: #999;
+
+  --bs-main-font-color: #555;
+  --bs-title-font-color: #333;
+  --bs-secondary-font-color: #777;
+
+  --bs-main-font-size: 14px;
+  --bs-title-font-size: 18px;
+
+  --bs-main-font-weight: 400;
+  --bs-title-font-weight: 400;
+
+  --bs-disabled-opacity: 0.4;
+}
