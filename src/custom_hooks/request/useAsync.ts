@@ -1,42 +1,83 @@
-import { useReducer, useEffect, useCallback } from 'react';
+import { useState, useReducer, useEffect, useCallback } from 'react';
 import {
   PromiseFun,
   BaseOptions,
   AsyncOptions,
-  NewRequestOptions,
-  Result,
-  RunRequest
+  RunRequest,
+  BaseResult,
+  BaseFunResult,
+  CacheResult,
+  Result
 } from './types';
 
 const defaultOptions: BaseOptions = {
   manual: true
 };
 
+const initialResult = {
+  data: undefined,
+  loading: false,
+  error: undefined,
+  params: []
+};
+
 function useAsync(promiseRequest: PromiseFun, asyncOptions: AsyncOptions): Result {
-  // const [] = useReducer();
+  const [currentResult, setCurrentResult] = useState<BaseResult>({ ...initialResult });
+  const [cachedResults, setCachedResults] = useState<CacheResult>({});
 
   const runRequest: RunRequest = useCallback(
-    (...args: any[] | [NewRequestOptions]) => {
-      const { customRequest, url, requestConfig } = {
+    async (...args: any[]) => {
+      const { cacheKey, coverLastResult } = {
         ...defaultOptions,
         ...asyncOptions
       };
 
-      if (customRequest) {
-        promiseRequest(...args);
-      } else {
-        promiseRequest(args[0]?.url || url, args[0]?.requestConfig || requestConfig);
+      // 当需要覆盖上一次结果时
+      if (coverLastResult) {
+        if (cacheKey) {
+          setCachedResults(oldState => ({
+            ...oldState,
+            [cacheKey]: {
+              ...initialResult,
+              loading: true,
+              params: args,
+              resetData,
+              runRequest,
+              cancelRequest
+            }
+          }));
+        } else {
+          setCurrentResult({
+            ...initialResult,
+            loading: true,
+            params: args
+          });
+        }
       }
+
+      await promiseRequest(...args)
+        .then((data) => {
+          console.log(data);
+        })
+        .catch(error => error);
     },
     [asyncOptions]
   );
 
+  const cancelRequest = useCallback(() => {
+    console.log(111);
+  }, []);
+
+  const resetData = useCallback(() => {
+    console.log(222);
+  }, []);
+
   return {
-    data: 123,
-    loading: true,
-    error: undefined,
-    runRequest
-    // cancelRequest: () => {}
+    ...currentResult,
+    cachedResults,
+    runRequest,
+    cancelRequest,
+    resetData
   };
 }
 

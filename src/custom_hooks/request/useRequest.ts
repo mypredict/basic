@@ -1,5 +1,6 @@
 import { useRef, useMemo } from 'react';
 import useAsync from './useAsync';
+import bsRequest from './bs-request';
 import fetching from './fetching';
 import { RequestParams, PromiseFun, Options, AsyncOptions, Result } from './types';
 
@@ -26,7 +27,7 @@ function useRequest(requestParams: RequestParams, options: Options = {}): Result
     return [fetching, { url, ...options, requestConfig, customRequest: false }];
   }, [requestParams, options]);
 
-  return useAsync(request[0], request[1]);
+  return useAsync(...request);
 }
 
 export default useRequest;

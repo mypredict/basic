@@ -1,7 +1,50 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useRequest, useCopy, usePagination, useVirtualized } from './custom_hooks/index';
-import { Switch, Radio, Dialog } from './basic_components/index';
+import { Switch, Radio, Dialog, message } from './basic_components/index';
 import './App.css';
+
+const mockData = [
+  {
+    time: 20180625,
+    tasks: []
+  },
+  {
+    time: 20180626,
+    tasks: [
+      { 'name': '咨询&建议', time: '1300' },
+      { 'name': '自定义任务', time: '1300' }
+    ]
+  },
+  {
+    time: 20180627,
+    tasks: []
+  },
+  {
+    time: 20180628,
+    tasks: [
+      { 'name': '...', time: '1300' },
+      { 'name': '随访任务', time: '1400' },
+      { 'name': '投诉任务', time: '1500' },
+      { 'name': '预约任务', time: '1600' }
+    ]
+  },
+  {
+    time: 20180629,
+    tasks: []
+  },
+  {
+    time: 20180630,
+    tasks: [
+      { 'name': '投诉任务', time: '1300' }
+    ]
+  },
+  {
+    time: 20180701,
+    tasks: []
+  }
+]
+
+message.info();
 
 const items = Array.from(Array(20000)).map((_, index) => {
   return {
@@ -50,9 +93,44 @@ const App: React.FC = () => {
 
   // console.log({ data, startIndex, endIndex, countPage });
 
+  const [windowSize, setWindowSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight
+  });
+  useEffect(() => {
+    const handler = () => {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    };
+    window.addEventListener('resize', handler);
+    return () => window.removeEventListener('resize', handler);
+  }, []);
+
+  const fillItemNumber = useMemo(() => {
+    const { width } = windowSize;
+    if (width < 150 * 7) {
+      return 6;
+    }
+    return 0;
+  }, [windowSize]);
+
   return (
     <div className="App">
-      <Switch disabled={false} />
+      <ul className="list-container">
+        {mockData.map(({ time, tasks }) => (
+          <li className="list-item" key={time}>
+            {tasks.map(({ name, time: taskTime }) => (
+              <div key={taskTime}>{name}</div>
+            ))}
+          </li>
+        ))}
+        {Array(fillItemNumber).fill('').map((fillContent, fillIndex) => (
+          <li className="fill-item" key={fillIndex}>{fillContent}</li>
+        ))}
+      </ul>
+      <Switch>nihao</Switch>
       <Radio.Group value={value} onChange={handleChangeRadio}>
         <Radio value={1} />
         <Radio value={2} />
@@ -61,7 +139,7 @@ const App: React.FC = () => {
 
       <Dialog
         title="发动机山卡拉富家大室发动机是离开"
-        animationType="scale"
+        animationType="scale_fade"
         outsideClickCancel={true}
         visible={visible}
         confirmBtnAsync={true}

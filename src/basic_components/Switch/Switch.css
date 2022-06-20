@@ -1,20 +1,19 @@
-.switch-basic {
-  margin: 5rem 20rem;
+.bs-switch {
+  box-sizing: border-box;
+  display: inline-block;
   position: relative;
-  width: 4rem;
-  height: 2rem;
   border: none;
   outline: none;
   background-color: rgba(0, 0, 0, 0);
   cursor: pointer;
 }
 
-.switch-basic-disabled {
+.bs-switch-disabled {
   cursor: not-allowed;
-  opacity: 0.4;
+  opacity: var(--bs-disabled-opacity);
 }
 
-.switch-basic::before {
+.bs-switch::before {
   content: '';
   position: absolute;
   width: 100%;
@@ -25,20 +24,21 @@
   transition: background-color 0.3s;
 }
 
-.switch-basic-on::before {
-  background-color: #6cc4ca;
+.bs-switch-on::before {
+  background-color: var(--bs-button-on-bg);
 }
 
-.switch-basic-off::before {
-  background-color: #999;
+.bs-switch-off::before {
+  background-color: var(--bs-button-off-bg);
 }
 
-.switch-basic::after {
-  content: '';
-  position: absolute;
+.bs-switch::after {
   box-sizing: border-box;
+  content: attr(data-height);
+  position: absolute;
   width: 2rem;
-  height: 100%;
+  /* height: 100%; */
+  height: attr(data-height);
   border-radius: 100%;
   border: 4px solid;
   top: 50%;
@@ -46,14 +46,14 @@
   transition: left 0.3s, background-color 0.3s, border-color 0.3s;
 }
 
-.switch-basic-on::after {
-  left: calc(50%);
+.bs-switch-on::after {
+  left: calc(100% - attr(data-height));
   background-color: #FFF;
-  border-color: #6cc4ca;
+  border-color: var(--bs-button-on-bg);
 }
 
-.switch-basic-off::after {
+.bs-switch-off::after {
   left: 0;
   background-color: #bbb;
-  border-color: #999;
+  border-color: var(--bs-button-off-bg);
 }

@@ -1,0 +1,5 @@
+.bs-message {
+  position: fixed;
+  margin: 0 auto;
+  background: red;
+}
